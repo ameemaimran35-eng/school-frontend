@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gallery — Brightway School</title>
+  <meta name="description" content="Photos of our campus, classrooms, activities and events.">
+  <meta name="theme-color" content="#0c1a26">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body data-page="gallery">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div data-include="components/navbar.html"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="decor decor--rocket" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="assets/images/icons.svg#d-rocket"/></svg></div>
+      <div class="decor decor--balloon" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="assets/images/icons.svg#d-balloon"/></svg></div>
+      <div class="decor decor--book" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="assets/images/icons.svg#d-bookopen"/></svg></div>
+      <div class="decor decor--triangle" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="assets/images/icons.svg#d-triangle"/></svg></div>
+      <div class="container page-hero__inner">
+        <h1>School gallery</h1>
+        <p>A look at campus, classrooms, activities and celebrations.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="filters" role="group" aria-label="Filter gallery by category" data-reveal>
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter" type="button" data-filter="campus" aria-pressed="false">Campus</button>
+          <button class="filter" type="button" data-filter="activities" aria-pressed="false">Activities</button>
+          <button class="filter" type="button" data-filter="events" aria-pressed="false">Events</button>
+          <button class="filter" type="button" data-filter="classrooms" aria-pressed="false">Classrooms</button>
+        </div>
+        <div class="gallery" id="gallery">
+          <button class="gallery__item" type="button" data-category="campus"><img src="assets/images/gallery/campus-1.svg" alt="Campus building (placeholder illustration)" loading="lazy"><figcaption>Campus building</figcaption></button>
+          <button class="gallery__item" type="button" data-category="activities"><img src="assets/images/gallery/activity-1.svg" alt="Outdoor activity (placeholder illustration)" loading="lazy"><figcaption>Outdoor activity</figcaption></button>
+          <button class="gallery__item" type="button" data-category="events"><img src="assets/images/gallery/event-1.svg" alt="Stage event (placeholder illustration)" loading="lazy"><figcaption>Stage event</figcaption></button>
+          <button class="gallery__item" type="button" data-category="classrooms"><img src="assets/images/gallery/classroom-1.svg" alt="Classroom lesson (placeholder illustration)" loading="lazy"><figcaption>Classroom lesson</figcaption></button>
+          <button class="gallery__item" type="button" data-category="campus"><img src="assets/images/gallery/campus-2.svg" alt="Campus lawn (placeholder illustration)" loading="lazy"><figcaption>Campus lawn</figcaption></button>
+          <button class="gallery__item" type="button" data-category="events"><img src="assets/images/gallery/event-2.svg" alt="Celebration (placeholder illustration)" loading="lazy"><figcaption>Celebration</figcaption></button>
+          <button class="gallery__item" type="button" data-category="activities"><img src="assets/images/gallery/activity-2.svg" alt="Sports time (placeholder illustration)" loading="lazy"><figcaption>Sports time</figcaption></button>
+          <button class="gallery__item" type="button" data-category="classrooms"><img src="assets/images/gallery/classroom-2.svg" alt="Group learning (placeholder illustration)" loading="lazy"><figcaption>Group learning</figcaption></button>
+          <button class="gallery__item" type="button" data-category="campus"><img src="assets/images/gallery/campus-3.svg" alt="Campus entrance (placeholder illustration)" loading="lazy"><figcaption>Campus entrance</figcaption></button>
+          <button class="gallery__item" type="button" data-category="events"><img src="assets/images/gallery/event-3.svg" alt="School assembly (placeholder illustration)" loading="lazy"><figcaption>School assembly</figcaption></button>
+          <button class="gallery__item" type="button" data-category="classrooms"><img src="assets/images/gallery/classroom-3.svg" alt="Reading time (placeholder illustration)" loading="lazy"><figcaption>Reading time</figcaption></button>
+          <button class="gallery__item" type="button" data-category="activities"><img src="assets/images/gallery/activity-3.svg" alt="Playground (placeholder illustration)" loading="lazy"><figcaption>Playground</figcaption></button>
+          
+        </div>
+        <p class="gallery-note">These are placeholder illustrations. Replace the files in <code>assets/images/gallery/</code> with real photographs.</p>
+      </div>
+    </section>
+    <section class="section section--paper">
+      <div class="container">
+        <div class="cta-band" data-reveal>
+          <div class="decor decor--rocket" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="assets/images/icons.svg#d-rocket"/></svg></div>
+          <div class="decor decor--balloon" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="assets/images/icons.svg#d-balloon"/></svg></div>
+          <h2>Want to see it in person?</h2>
+          <p>Book a school visit and meet the people behind the pictures.</p>
+          <div class="btn-row">
+            <a class="btn btn--mint" href="admissions.html">Apply for admission</a>
+            <a class="btn btn--line" href="contact.html">Contact us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="components/footer.html"></div>
+
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/gallery.js" defer></script>
+</body>
+</html>
