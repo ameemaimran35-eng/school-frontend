@@ -104,3 +104,11 @@
   .section-head--split { align-items: flex-start; }
   .dates th, .dates td { padding: 14px 16px; }
 }
+
+@media (max-width: 480px) {
+  .mosaic { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+  .mosaic a:nth-child(1) { grid-column: auto; grid-row: auto; }
+  .mosaic a:nth-child(4) { grid-column: auto; }
+  .gallery__item { min-height: 220px; }
+  .gallery__item img { min-height: 220px; }
+}

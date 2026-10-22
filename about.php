@@ -1,3 +1,27 @@
+<?php
+require_once __DIR__ . '/config/database.php';
+
+$web_images = [];
+if ($conn) {
+    $res = mysqli_query($conn, "SELECT image_key, image_path, fallback_path, alt_text FROM website_images");
+    if ($res) {
+        while ($r = mysqli_fetch_assoc($res)) {
+            $has_file = !empty($r['image_path']) && file_exists(__DIR__ . '/' . $r['image_path']);
+            $web_images[$r['image_key']] = [
+                'src' => $has_file ? $r['image_path'] : $r['fallback_path'],
+                'alt' => $r['alt_text']
+            ];
+        }
+    }
+}
+function getWebImg($key, $default_src, $default_alt = '') {
+    global $web_images;
+    if (isset($web_images[$key])) {
+        return $web_images[$key];
+    }
+    return ['src' => $default_src, 'alt' => $default_alt];
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,7 +39,7 @@
 </head>
 <body data-page="about">
   <a class="skip-link" href="#main">Skip to content</a>
-  <div data-include="components/navbar.html"></div>
+  <?php include __DIR__ . '/components/navbar.php'; ?>
 
   <main id="main">
     <section class="page-hero">
@@ -31,13 +55,14 @@
 
     <section class="section">
       <div class="container split">
-        <div class="photo-arch" style="--bg:#1ea7ec" data-reveal><img src="assets/images/about-teacher.svg" alt="Teacher giving a thumbs up (placeholder illustration)" loading="lazy"></div>
+        <?php $abt_m = getWebImg('about_page_main', 'assets/images/about-teacher.svg', 'Teacher'); ?>
+        <div class="photo-arch" style="--bg:#1ea7ec" data-reveal><img src="<?php echo htmlspecialchars($abt_m['src']); ?>" alt="<?php echo htmlspecialchars($abt_m['alt']); ?>" loading="lazy"></div>
         <div data-reveal style="--d:.1s">
           <span class="eyebrow">Who we are</span>
           <h2 class="title">A community built around curious learners.</h2>
           <p class="lead">Introduce your school here: when and why it was founded, who it serves, and what a typical day feels like. This paragraph is placeholder text.</p>
           <p class="lead">Add a second paragraph about your teaching philosophy or your community.</p>
-          <a class="btn btn--dark" href="admissions.html">Start admission</a>
+          <a class="btn btn--dark" href="admissions.php">Start admission</a>
         </div>
       </div>
     </section>
@@ -67,7 +92,8 @@
 
     <section class="section section--paper">
       <div class="container split split--flip">
-        <div class="photo-rect" data-reveal><img src="assets/images/gallery/campus-2.svg" alt="School campus (placeholder illustration)" loading="lazy"></div>
+        <?php $abt_c = getWebImg('about_page_campus', 'assets/images/gallery/campus-2.svg', 'School campus'); ?>
+        <div class="photo-rect" data-reveal><img src="<?php echo htmlspecialchars($abt_c['src']); ?>" alt="<?php echo htmlspecialchars($abt_c['alt']); ?>" loading="lazy"></div>
         <div data-reveal style="--d:.1s">
           <h2 class="title">Facilities and school environment</h2>
           <p class="lead">Describe your campus: classrooms, outdoor spaces, safety measures and anything that makes it welcoming.</p>
@@ -98,15 +124,15 @@
           <h2>Admissions are open. Take the first step.</h2>
           <p>Tell us a little about your child and we will get back to you with the next steps.</p>
           <div class="btn-row">
-            <a class="btn btn--mint" href="admissions.html">Apply for admission</a>
-            <a class="btn btn--line" href="contact.html">Contact us</a>
+            <a class="btn btn--mint" href="admissions.php">Apply for admission</a>
+            <a class="btn btn--line" href="contact.php">Contact us</a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <div data-include="components/footer.html"></div>
+  <?php include __DIR__ . '/components/footer.php'; ?>
 
   <script src="assets/js/main.js" defer></script>
 </body>

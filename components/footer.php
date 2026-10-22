@@ -3,18 +3,18 @@
   <div class="container">
     <div class="footer__grid">
       <div>
-        <a class="brand" href="index.html"><span class="brand__mark" aria-hidden="true"></span><span>Brightway</span></a>
+        <a class="brand" href="index.php"><span class="brand__mark" aria-hidden="true"></span><span>Brightway</span></a>
         <p>Add a one-line description of your school here. <span class="ph">Placeholder text</span></p>
       </div>
       <div>
         <h4>Explore</h4>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About the school</a></li>
-          <li><a href="academics.html">Academics</a></li>
-          <li><a href="admissions.html">Admissions</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="about.php">About the school</a></li>
+          <li><a href="academics.php">Academics</a></li>
+          <li><a href="admissions.php">Admissions</a></li>
+          <li><a href="gallery.php">Gallery</a></li>
+          <li><a href="contact.php">Contact</a></li>
         </ul>
       </div>
       <div>
@@ -29,7 +29,7 @@
       <div>
         <h4>Admissions</h4>
         <p>Ready to join us? Start with a quick inquiry.</p>
-        <a class="btn btn--mint" href="admissions.html">Apply for admission</a>
+        <a class="btn btn--mint" href="admissions.php">Apply for admission</a>
       </div>
     </div>
     <div class="footer__bottom">

@@ -150,6 +150,50 @@
     });
   }
 
+  /* ---------- 5. login portal modal ---------- */
+  function initLoginModal() {
+    var modal = document.getElementById("loginModal");
+    if (!modal) return;
+
+    function openModal(e) {
+      if (e) e.preventDefault();
+      modal.removeAttribute("hidden");
+      // Force layout repaint so transition works
+      void modal.offsetWidth;
+      modal.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      var firstCard = modal.querySelector(".login-role-card");
+      if (firstCard) firstCard.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove("is-open");
+      document.body.style.overflow = "";
+      setTimeout(function () {
+        if (!modal.classList.contains("is-open")) {
+          modal.setAttribute("hidden", "");
+        }
+      }, 260);
+    }
+
+    // Intercept clicks on any login buttons or links pointing to login.php
+    document.addEventListener("click", function (e) {
+      var trigger = e.target.closest('a[href*="admin/login.php"], .js-login-modal-trigger, [data-login-modal]');
+      if (trigger && !modal.contains(trigger)) {
+        openModal(e);
+      } else if (e.target.closest("[data-close-modal]")) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+  }
+
   /* ---------- boot ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     loadIncludes().then(function () {
@@ -157,6 +201,7 @@
       initYear();
       initReveal();
       initForms();
+      initLoginModal();
     });
   });
 })();

@@ -1,3 +1,27 @@
+<?php
+require_once __DIR__ . '/config/database.php';
+
+$web_images = [];
+if ($conn) {
+    $res = mysqli_query($conn, "SELECT image_key, image_path, fallback_path, alt_text FROM website_images");
+    if ($res) {
+        while ($r = mysqli_fetch_assoc($res)) {
+            $has_file = !empty($r['image_path']) && file_exists(__DIR__ . '/' . $r['image_path']);
+            $web_images[$r['image_key']] = [
+                'src' => $has_file ? $r['image_path'] : $r['fallback_path'],
+                'alt' => $r['alt_text']
+            ];
+        }
+    }
+}
+function getWebImg($key, $default_src, $default_alt = '') {
+    global $web_images;
+    if (isset($web_images[$key])) {
+        return $web_images[$key];
+    }
+    return ['src' => $default_src, 'alt' => $default_alt];
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,7 +39,7 @@
 </head>
 <body data-page="academics">
   <a class="skip-link" href="#main">Skip to content</a>
-  <div data-include="components/navbar.html"></div>
+  <?php include __DIR__ . '/components/navbar.php'; ?>
 
   <main id="main">
     <section class="page-hero">
@@ -36,23 +60,29 @@
           <p class="lead">Replace the grade ranges and descriptions with your own.</p>
         </div>
         <div class="levels" data-reveal>
+          <?php 
+            $p_ey = getWebImg('program_early_years', 'assets/images/gallery/classroom-1.svg', 'Early Years');
+            $p_pr = getWebImg('program_primary', 'assets/images/gallery/activity-1.svg', 'Primary');
+            $p_md = getWebImg('program_middle', 'assets/images/gallery/classroom-2.svg', 'Middle School');
+            $p_sc = getWebImg('program_secondary', 'assets/images/gallery/campus-2.svg', 'Secondary');
+          ?>
           <article class="level">
-            <div class="level__arch" style="--bg:#ffe3ec"><img src="assets/images/gallery/classroom-1.svg" alt="Early Years learning environment" loading="lazy"></div>
+            <div class="level__arch" style="--bg:#ffe3ec"><img src="<?php echo htmlspecialchars($p_ey['src']); ?>" alt="<?php echo htmlspecialchars($p_ey['alt']); ?>" loading="lazy"></div>
             <h3>Early Years</h3>
             <p><span class="ph">[Add age or grade range]</span><br>Play-based learning that builds confidence and curiosity.</p>
           </article>
           <article class="level">
-            <div class="level__arch" style="--bg:#e4fbe4"><img src="assets/images/gallery/activity-1.svg" alt="Primary learning environment" loading="lazy"></div>
+            <div class="level__arch" style="--bg:#e4fbe4"><img src="<?php echo htmlspecialchars($p_pr['src']); ?>" alt="<?php echo htmlspecialchars($p_pr['alt']); ?>" loading="lazy"></div>
             <h3>Primary</h3>
             <p><span class="ph">[Add grade range]</span><br>Core literacy and numeracy with a love of discovery.</p>
           </article>
           <article class="level">
-            <div class="level__arch" style="--bg:#eee6ff"><img src="assets/images/gallery/classroom-2.svg" alt="Middle School learning environment" loading="lazy"></div>
+            <div class="level__arch" style="--bg:#eee6ff"><img src="<?php echo htmlspecialchars($p_md['src']); ?>" alt="<?php echo htmlspecialchars($p_md['alt']); ?>" loading="lazy"></div>
             <h3>Middle School</h3>
             <p><span class="ph">[Add grade range]</span><br>Wider subjects and growing responsibility.</p>
           </article>
           <article class="level">
-            <div class="level__arch" style="--bg:#fff1c9"><img src="assets/images/gallery/campus-2.svg" alt="Secondary learning environment" loading="lazy"></div>
+            <div class="level__arch" style="--bg:#fff1c9"><img src="<?php echo htmlspecialchars($p_sc['src']); ?>" alt="<?php echo htmlspecialchars($p_sc['alt']); ?>" loading="lazy"></div>
             <h3>Secondary</h3>
             <p><span class="ph">[Add grade range]</span><br>Focused preparation for exams and future studies.</p>
           </article>
@@ -118,15 +148,15 @@
           <h2>Admissions are open. Take the first step.</h2>
           <p>Tell us a little about your child and we will get back to you with the next steps.</p>
           <div class="btn-row">
-            <a class="btn btn--mint" href="admissions.html">Apply for admission</a>
-            <a class="btn btn--line" href="contact.html">Contact us</a>
+            <a class="btn btn--mint" href="admissions.php">Apply for admission</a>
+            <a class="btn btn--line" href="contact.php">Contact us</a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <div data-include="components/footer.html"></div>
+  <?php include __DIR__ . '/components/footer.php'; ?>
 
   <script src="assets/js/main.js" defer></script>
 </body>

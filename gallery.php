@@ -1,3 +1,16 @@
+<?php
+require_once __DIR__ . '/config/database.php';
+
+$gallery_images = [];
+if ($conn) {
+    $res = mysqli_query($conn, "SELECT * FROM gallery_images WHERE is_published = 1 ORDER BY display_order ASC, id DESC");
+    if ($res) {
+        while ($r = mysqli_fetch_assoc($res)) {
+            $gallery_images[] = $r;
+        }
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,7 +28,7 @@
 </head>
 <body data-page="gallery">
   <a class="skip-link" href="#main">Skip to content</a>
-  <div data-include="components/navbar.html"></div>
+  <?php include __DIR__ . '/components/navbar.php'; ?>
 
   <main id="main">
     <section class="page-hero">
@@ -39,21 +52,22 @@
           <button class="filter" type="button" data-filter="classrooms" aria-pressed="false">Classrooms</button>
         </div>
         <div class="gallery" id="gallery">
-          <button class="gallery__item" type="button" data-category="campus"><img src="assets/images/gallery/campus-1.svg" alt="Campus building (placeholder illustration)" loading="lazy"><figcaption>Campus building</figcaption></button>
-          <button class="gallery__item" type="button" data-category="activities"><img src="assets/images/gallery/activity-1.svg" alt="Outdoor activity (placeholder illustration)" loading="lazy"><figcaption>Outdoor activity</figcaption></button>
-          <button class="gallery__item" type="button" data-category="events"><img src="assets/images/gallery/event-1.svg" alt="Stage event (placeholder illustration)" loading="lazy"><figcaption>Stage event</figcaption></button>
-          <button class="gallery__item" type="button" data-category="classrooms"><img src="assets/images/gallery/classroom-1.svg" alt="Classroom lesson (placeholder illustration)" loading="lazy"><figcaption>Classroom lesson</figcaption></button>
-          <button class="gallery__item" type="button" data-category="campus"><img src="assets/images/gallery/campus-2.svg" alt="Campus lawn (placeholder illustration)" loading="lazy"><figcaption>Campus lawn</figcaption></button>
-          <button class="gallery__item" type="button" data-category="events"><img src="assets/images/gallery/event-2.svg" alt="Celebration (placeholder illustration)" loading="lazy"><figcaption>Celebration</figcaption></button>
-          <button class="gallery__item" type="button" data-category="activities"><img src="assets/images/gallery/activity-2.svg" alt="Sports time (placeholder illustration)" loading="lazy"><figcaption>Sports time</figcaption></button>
-          <button class="gallery__item" type="button" data-category="classrooms"><img src="assets/images/gallery/classroom-2.svg" alt="Group learning (placeholder illustration)" loading="lazy"><figcaption>Group learning</figcaption></button>
-          <button class="gallery__item" type="button" data-category="campus"><img src="assets/images/gallery/campus-3.svg" alt="Campus entrance (placeholder illustration)" loading="lazy"><figcaption>Campus entrance</figcaption></button>
-          <button class="gallery__item" type="button" data-category="events"><img src="assets/images/gallery/event-3.svg" alt="School assembly (placeholder illustration)" loading="lazy"><figcaption>School assembly</figcaption></button>
-          <button class="gallery__item" type="button" data-category="classrooms"><img src="assets/images/gallery/classroom-3.svg" alt="Reading time (placeholder illustration)" loading="lazy"><figcaption>Reading time</figcaption></button>
-          <button class="gallery__item" type="button" data-category="activities"><img src="assets/images/gallery/activity-3.svg" alt="Playground (placeholder illustration)" loading="lazy"><figcaption>Playground</figcaption></button>
-          
+          <?php if (!empty($gallery_images)): ?>
+            <?php foreach ($gallery_images as $img): 
+              $path = htmlspecialchars($img['image_path']);
+              $title = htmlspecialchars($img['title']);
+              $alt = htmlspecialchars($img['alt_text'] ?: $img['title']);
+              $cat = htmlspecialchars($img['category']);
+            ?>
+              <button class="gallery__item" type="button" data-category="<?php echo $cat; ?>">
+                <img src="<?php echo $path; ?>" alt="<?php echo $alt; ?>" width="800" height="600" loading="lazy">
+                <figcaption><?php echo $title; ?></figcaption>
+              </button>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <p style="grid-column: 1 / -1; text-align: center; padding: 48px; color: var(--lead, #7b8a99);">No gallery photos available yet.</p>
+          <?php endif; ?>
         </div>
-        <p class="gallery-note">These are placeholder illustrations. Replace the files in <code>assets/images/gallery/</code> with real photographs.</p>
       </div>
     </section>
     <section class="section section--paper">
@@ -64,15 +78,15 @@
           <h2>Want to see it in person?</h2>
           <p>Book a school visit and meet the people behind the pictures.</p>
           <div class="btn-row">
-            <a class="btn btn--mint" href="admissions.html">Apply for admission</a>
-            <a class="btn btn--line" href="contact.html">Contact us</a>
+            <a class="btn btn--mint" href="admissions.php">Apply for admission</a>
+            <a class="btn btn--line" href="contact.php">Contact us</a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <div data-include="components/footer.html"></div>
+  <?php include __DIR__ . '/components/footer.php'; ?>
 
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/gallery.js" defer></script>

@@ -1,3 +1,27 @@
+<?php
+require_once __DIR__ . '/config/database.php';
+
+$web_images = [];
+if ($conn) {
+    $res = mysqli_query($conn, "SELECT image_key, image_path, fallback_path, alt_text FROM website_images");
+    if ($res) {
+        while ($r = mysqli_fetch_assoc($res)) {
+            $has_file = !empty($r['image_path']) && file_exists(__DIR__ . '/' . $r['image_path']);
+            $web_images[$r['image_key']] = [
+                'src' => $has_file ? $r['image_path'] : $r['fallback_path'],
+                'alt' => $r['alt_text']
+            ];
+        }
+    }
+}
+function getWebImg($key, $default_src, $default_alt = '') {
+    global $web_images;
+    if (isset($web_images[$key])) {
+        return $web_images[$key];
+    }
+    return ['src' => $default_src, 'alt' => $default_alt];
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,7 +39,7 @@
 </head>
 <body data-page="admissions">
   <a class="skip-link" href="#main">Skip to content</a>
-  <div data-include="components/navbar.html"></div>
+  <?php include __DIR__ . '/components/navbar.php'; ?>
 
   <main id="main">
     <section class="page-hero">
@@ -36,7 +60,8 @@
           <p class="lead">Five steps from first inquiry to the first day. Edit them to match your school’s process.</p>
           <ol class="steps" style="margin-top:2rem"><li><div><h3>Send an inquiry</h3><p>Fill in the form below or contact the office so we know you are interested.</p></div></li><li><div><h3>Visit the school</h3><p>Meet our team, see the classrooms and ask your questions.</p></div></li><li><div><h3>Submit the application</h3><p>Complete the application and provide the required documents.</p></div></li><li><div><h3>Assessment or interview</h3><p>A friendly conversation or short assessment, where applicable.</p></div></li><li><div><h3>Confirm admission</h3><p>Receive the decision and complete enrollment formalities.</p></div></li></ol>
         </div>
-        <div class="photo-arch" style="--bg:#bba8e3;--d:.1s" data-reveal><img src="assets/images/student-1.svg" alt="Student holding a folder (placeholder illustration)" loading="lazy"></div>
+        <?php $adm_p = getWebImg('admissions_photo', 'assets/images/student-1.svg', 'Student holding a folder'); ?>
+        <div class="photo-arch" style="--bg:#bba8e3;--d:.1s" data-reveal><img src="<?php echo htmlspecialchars($adm_p['src']); ?>" alt="<?php echo htmlspecialchars($adm_p['alt']); ?>" loading="lazy"></div>
       </div>
     </section>
 
@@ -84,8 +109,8 @@
           <li><span class="icon-chip" style="--c:var(--sun-soft)"><svg class="icon" aria-hidden="true"><use href="assets/images/icons.svg#i-clock"/></svg></span><div><small>Office hours</small><strong class="ph">[Days and hours]</strong></div></li>
         </ul>
           <div style="margin-top:1.8rem;display:flex;gap:12px;flex-wrap:wrap">
-            <a class="btn btn--outline" href="contact.html">Contact the office</a>
-            <a class="btn btn--dark" href="academics.html">View programs</a>
+            <a class="btn btn--outline" href="contact.php">Contact the office</a>
+            <a class="btn btn--dark" href="academics.php">View programs</a>
           </div>
         </div>
         <div data-reveal style="--d:.1s">
@@ -140,7 +165,7 @@
     </section>
   </main>
 
-  <div data-include="components/footer.html"></div>
+  <?php include __DIR__ . '/components/footer.php'; ?>
 
   <script src="assets/js/main.js" defer></script>
 </body>

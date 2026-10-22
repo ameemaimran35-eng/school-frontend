@@ -15,7 +15,7 @@
 </head>
 <body data-page="contact">
   <a class="skip-link" href="#main">Skip to content</a>
-  <div data-include="components/navbar.html"></div>
+  <?php include __DIR__ . '/components/navbar.php'; ?>
 
   <main id="main">
     <section class="page-hero">
@@ -80,20 +80,33 @@
       </div>
     </section>
 
-    <section class="section section--paper">
+        <!-- MAP SECTION -->
+    <section class="section section--paper" style="padding-top:0">
       <div class="container">
-        <div class="map-ph" data-reveal>
-          <div>
-            <svg class="icon" aria-hidden="true"><use href="assets/images/icons.svg#i-pin"/></svg>
-            <h3>Map placeholder</h3>
-            <p style="margin:0;color:var(--muted);max-width:44ch">Add the school’s address above, then replace this block with an embedded map (for example a Google Maps iframe).</p>
-          </div>
+        <!-- TODO: Apne school ki exact Google Maps embed link yahan lagayen -->
+        <!-- Steps: Google Maps -> Search school -> Share -> Embed a map -> Copy HTML -> paste src URL here -->
+        <div style="border-radius:1rem; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,.10); border:1px solid var(--border);" data-reveal>
+          <iframe
+            id="school-map"
+            title="School Location on Google Maps"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3402.0!2d74.3294!3d31.5204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391904b5e3a7c3e1%3A0x1234abcd!2sModel+Town%2C+Lahore%2C+Pakistan!5e0!3m2!1sen!2spk!4v1234567890"
+            width="100%"
+            height="450"
+            style="border:0; display:block;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
         </div>
+        <p style="margin-top:.75rem; font-size:.85rem; color:var(--muted); text-align:center;">
+          📍 Model Town, Lahore, Pakistan &nbsp;|&nbsp;
+          <a href="https://maps.google.com/?q=Model+Town,Lahore,Pakistan" target="_blank" rel="noopener" style="color:var(--accent)">Open in Google Maps ↗</a>
+        </p>
       </div>
     </section>
   </main>
 
-  <div data-include="components/footer.html"></div>
+  <?php include __DIR__ . '/components/footer.php'; ?>
 
   <script src="assets/js/main.js" defer></script>
 </body>

@@ -345,7 +345,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .mosaic a { position: relative; overflow: hidden; border-radius: var(--r-sm); display: block; }
 .mosaic a:nth-child(1) { grid-column: span 2; grid-row: span 2; border-radius: var(--r-pill) var(--r-pill) var(--r-sm) var(--r-sm); }
 .mosaic a:nth-child(4) { grid-column: span 2; }
-.mosaic img, .gallery__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+.mosaic img, .gallery__item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s var(--ease); }
 .mosaic a:hover img, .gallery__item:hover img { transform: scale(1.06); }
 
 .filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 36px; }
@@ -353,7 +353,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .filter:hover { border-color: var(--navy); }
 .filter[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--white); }
 .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.gallery__item { position: relative; border: 0; padding: 0; overflow: hidden; border-radius: var(--r-sm); aspect-ratio: 4 / 3; background: var(--paper); display: block; width: 100%; transition: opacity .35s, transform .35s var(--ease); }
+.gallery__item { position: relative; border: 0; padding: 0; overflow: hidden; border-radius: var(--r-sm); aspect-ratio: 4 / 3; min-height: 200px; background: var(--paper); display: block; width: 100%; transition: opacity .35s, transform .35s var(--ease); }
 .gallery__item:nth-child(5n + 1) { grid-row: span 1; }
 .gallery__item figcaption {
   position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 18px 14px; text-align: left; color: var(--white); font-size: .85rem; font-weight: 600;
@@ -496,4 +496,280 @@ button { font: inherit; color: inherit; cursor: pointer; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
   .js [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* ==========================================================================
+   Login Role Selection Modal Popup
+   ========================================================================== */
+.login-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease, visibility .25s ease;
+}
+.login-modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+.login-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 20, 30, 0.78);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+.login-modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: #0f1d2b;
+  background: linear-gradient(180deg, #132435 0%, #0c1a27 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  padding: 26px 24px 20px;
+  color: #fff;
+  z-index: 1;
+  transform: scale(0.92) translateY(12px);
+  transition: transform .26s cubic-bezier(0.16, 1, 0.3, 1), opacity .26s ease;
+  overflow: hidden;
+}
+.login-modal-overlay.is-open .login-modal-dialog {
+  transform: scale(1) translateY(0);
+}
+.login-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  position: relative;
+  padding-right: 32px;
+}
+.login-modal-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(52, 211, 153, 0.14);
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(52, 211, 153, 0.25);
+}
+.login-modal-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.login-modal-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 3px 0 0;
+}
+.login-modal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 1.25rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s ease;
+  padding: 0;
+}
+.login-modal-close:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: scale(1.06);
+}
+.login-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.login-role-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: #fff;
+  transition: all .22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+.login-role-card:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(52, 211, 153, 0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.4);
+}
+.login-role-card--admin:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+}
+.login-role-card--accountant:hover {
+  border-color: rgba(16, 185, 129, 0.5);
+}
+.login-role-card--receptionist:hover {
+  border-color: rgba(245, 158, 11, 0.5);
+}
+.login-role-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform .2s ease;
+}
+.login-role-card:hover .login-role-icon {
+  transform: scale(1.08);
+}
+.login-role-card--admin .login-role-icon {
+  background: rgba(99, 102, 241, 0.16);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.28);
+}
+.login-role-card--accountant .login-role-icon {
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+.login-role-card--receptionist .login-role-icon {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+.login-role-content {
+  flex: 1;
+  min-width: 0;
+}
+.login-role-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.login-role-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.25;
+}
+.login-role-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 6px;
+  line-height: 1;
+}
+.login-role-card--admin .login-role-tag {
+  background: rgba(99, 102, 241, 0.22);
+  color: #a5b4fc;
+}
+.login-role-card--accountant .login-role-tag {
+  background: rgba(16, 185, 129, 0.22);
+  color: #6ee7b7;
+}
+.login-role-card--receptionist .login-role-tag {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fde68a;
+}
+.login-role-desc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.62);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.login-role-arrow {
+  color: rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s ease, color .2s ease;
+  flex-shrink: 0;
+}
+.login-role-card:hover .login-role-arrow {
+  transform: translateX(4px);
+  color: #34d399;
+}
+.login-role-card--admin:hover .login-role-arrow {
+  color: #818cf8;
+}
+.login-role-card--receptionist:hover .login-role-arrow {
+  color: #fbbf24;
+}
+.login-modal-footer {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+@media (max-width: 480px) {
+  .login-modal-overlay {
+    padding: 12px;
+  }
+  .login-modal-dialog {
+    padding: 20px 16px 16px;
+    border-radius: 18px;
+  }
+  .login-modal-header {
+    margin-bottom: 16px;
+  }
+  .login-modal-badge {
+    width: 38px;
+    height: 38px;
+  }
+  .login-modal-title {
+    font-size: 1.1rem;
+  }
+  .login-role-card {
+    padding: 11px 12px;
+    gap: 10px;
+  }
+  .login-role-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+  }
+  .login-role-title {
+    font-size: 0.9rem;
+  }
+  .login-role-desc {
+    font-size: 0.74rem;
+  }
 }
